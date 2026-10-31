@@ -4,8 +4,7 @@ Calls for the people in your app: place phone and in-app calls from an iOS app, 
 the [web client](https://github.com/sentdm/sent-dm-voice-typescript).
 
 This SDK places outbound calls: to a phone number, to a user of your app, or into a conference. Receiving
-calls on a phone needs push credentials registered with Sent, which is platform work scheduled separately;
-it arrives as a minor version with no change to this SDK's shape.
+calls on a phone is not part of it; the web client receives calls.
 
 Read the [Voice docs](https://docs.sent.dm/sdks/voice/ios) to get started.
 
