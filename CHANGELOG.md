@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/sentdm/sent-dm-voice-swift/compare/v0.1.1...v0.2.0) (2026-10-31)
+
+
+### Features
+
+* call quality warnings ([f4671dd](https://github.com/sentdm/sent-dm-voice-swift/commit/f4671dddc62f072b23beab559bdd9af66d669406))
+
 ## [0.1.1](https://github.com/sentdm/sent-dm-voice-swift/compare/v0.1.0...v0.1.1) (2026-10-31)
 
 
