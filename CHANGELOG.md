@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/sentdm/sent-dm-voice-swift/compare/v0.1.0...v0.1.1) (2026-10-31)
+
+
+### Documentation
+
+* install and quick start for the first release ([2eebc76](https://github.com/sentdm/sent-dm-voice-swift/commit/2eebc76cf64e908d59beda255c739ef596715a9d))
+* security policy ([45371e7](https://github.com/sentdm/sent-dm-voice-swift/commit/45371e7e08c7013a49f719253ea13f3381921791))
+
 ## 0.1.0 (2026-10-31)
 
 
