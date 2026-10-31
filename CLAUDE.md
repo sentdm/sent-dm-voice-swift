@@ -67,6 +67,10 @@ client.
 - **`ci:` and `test:` are hidden from the changelog.** `chore:`, `docs:`,
   `feat:` and `fix:` are not, and any of them cuts a release when the
   release PR is merged.
+- **PR titles carry no type prefix**: `voice-swift: <what changed>`, as in
+  `how-we-work.md`. PRs land with a merge commit, and release-please reads
+  a conventional PR title as one more commit, so a `feat:` title lists the
+  change twice in the changelog.
 - **One logical change per PR.**
 - **The description says** what was wrong, with a before-and-after example,
   what changed, and how you know it works. Call out behaviour changes and
