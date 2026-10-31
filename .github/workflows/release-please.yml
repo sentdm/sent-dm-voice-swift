@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+  # By hand too: after a tag or release is fixed outside release-please, a run
+  # re-reads the releases without waiting for the next merge.
+  workflow_dispatch:
 
 permissions:
   contents: write
