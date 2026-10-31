@@ -30,7 +30,7 @@ final class ClientTests: XCTestCase {
         await XCTAssertThrowsCode(.tokenInvalid) { try await client.register() }
         XCTAssertEqual(client.state, .unregistered)
         XCTAssertEqual(events.events.count, 2)
-        if case .error(let error) = events.events[1] { XCTAssertEqual(error.code, .tokenInvalid) } else { XCTFail("expected an error event") }
+        if case .error(let error)? = events.events.last { XCTAssertEqual(error.code, .tokenInvalid) } else { XCTFail("expected an error event") }
         await client.destroy()
     }
 

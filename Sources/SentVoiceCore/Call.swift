@@ -123,7 +123,7 @@ public final class Call: @unchecked Sendable, Identifiable {
     }
 }
 
-/// Cancels a listener when deinitialised or cancelled.
+/// Cancels a listener. A listener stays until its token is cancelled; dropping the token keeps it.
 public final class ListenerToken: @unchecked Sendable {
     private let lock = NSLock()
     private var onCancel: (() -> Void)?
@@ -137,8 +137,6 @@ public final class ListenerToken: @unchecked Sendable {
         }
         action?()
     }
-
-    deinit { cancel() }
 }
 
 extension NSLock {
