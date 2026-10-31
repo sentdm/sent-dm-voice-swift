@@ -89,7 +89,7 @@ final class SinchAdapter: NSObject, ProviderAdapter, @unchecked Sendable {
     }
 
     func stats(callId: String) async throws -> CallStats {
-        // The provider's iOS SDK reports quality as warning events rather than numbers.
+        // The provider's iOS SDK reports quality as warning events, not numbers; see `quality(_:)`.
         CallStats()
     }
 
@@ -116,6 +116,18 @@ final class SinchAdapter: NSObject, ProviderAdapter, @unchecked Sendable {
 
     private func emit(_ callId: String, _ event: AdapterCallEvent) {
         lock.locked { handler }?(callId, event)
+    }
+
+    /// What the provider's quality warning means in the contract's words, or nil for the ones the contract does not carry.
+    static func quality(_ event: SinchCallQualityWarningEvent) -> AdapterCallEvent? {
+        let cleared = event.eventType == .recover
+        switch event {
+        case .missingMediaStream: return cleared ? .reconnected : .reconnecting
+        case .highInboundJitter: return .qualityWarning(QualityWarning(metric: "jitter", cleared: cleared))
+        case .highInboundPacketLoss: return .qualityWarning(QualityWarning(metric: "packetLoss", cleared: cleared))
+        case .highRemoteInboundRtt: return .qualityWarning(QualityWarning(metric: "rtt", cleared: cleared))
+        default: return nil
+        }
     }
 
     /// What the provider's end cause means in the contract's words.
@@ -160,6 +172,10 @@ extension SinchAdapter: SinchCallDelegate {
     func callDidRing(_ call: SinchCall) { emit(call.callId, .ringing) }
     func callDidAnswer(_ call: SinchCall) { emit(call.callId, .answered) }
     func callDidEstablish(_ call: SinchCall) { emit(call.callId, .connected) }
+
+    func callDidEmitCallQualityEvent(_ call: SinchCall, event: SinchCallQualityWarningEvent) {
+        if let mapped = Self.quality(event) { emit(call.callId, mapped) }
+    }
 
     func callDidEnd(_ call: SinchCall) {
         lock.locked { _ = calls.removeValue(forKey: call.callId) }
