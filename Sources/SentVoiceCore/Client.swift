@@ -122,7 +122,7 @@ public final class SentVoiceClient: @unchecked Sendable {
             attempt += 1
             do {
                 let token = try await TokenExchange.fetch(tokenProvider: options.tokenProvider, baseURL: options.baseURL, http: http)
-                try await adapter.register(credential: token.credential)
+                try await adapter.register(credential: token.credential, number: token.number)
                 lock.locked { self.token = token }
                 telemetry.useToken(token.token)
                 telemetry.record(.registerCompleted, payload: ["attempt": .int(attempt)], at: now())
@@ -275,7 +275,7 @@ public final class SentVoiceClient: @unchecked Sendable {
             attempt += 1
             do {
                 let fresh = try await TokenExchange.fetch(tokenProvider: options.tokenProvider, baseURL: options.baseURL, http: http)
-                try await adapter.register(credential: fresh.credential)
+                try await adapter.register(credential: fresh.credential, number: fresh.number)
                 lock.locked { token = fresh }
                 telemetry.useToken(fresh.token)
                 if lock.locked({ clientState }) == .offline { setState(.registered, emit: .registered) }
