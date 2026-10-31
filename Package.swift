@@ -20,7 +20,9 @@ let package = Package(
             name: "SentVoice",
             dependencies: [
                 "SentVoiceCore",
-                .product(name: "SinchRTC", package: "sinch-ios-sdk-spm"),
+                // iOS only: the binary has no macOS slice, so `swift test` on a Mac builds this target empty
+                // (its sources are under `#if os(iOS)`) and xcodebuild builds the real thing for the simulator.
+                .product(name: "SinchRTC", package: "sinch-ios-sdk-spm", condition: .when(platforms: [.iOS])),
             ]
         ),
         .testTarget(name: "SentVoiceCoreTests", dependencies: ["SentVoiceCore"]),

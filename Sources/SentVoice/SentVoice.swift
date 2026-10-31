@@ -1,3 +1,4 @@
+#if os(iOS)
 import Foundation
 import SentVoiceCore
 
@@ -14,3 +15,4 @@ public enum SentVoice {
         SentVoiceClient(options: options, adapter: SinchAdapter())
     }
 }
+#endif

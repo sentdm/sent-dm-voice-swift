@@ -1,3 +1,4 @@
+#if os(iOS)
 import Foundation
 import SentVoiceCore
 import SinchRTC
@@ -165,3 +166,12 @@ extension SinchAdapter: SinchCallDelegate {
         emit(call.callId, Self.ended(call.details))
     }
 }
+
+private extension NSLock {
+    func locked<T>(_ body: () -> T) -> T {
+        lock()
+        defer { unlock() }
+        return body()
+    }
+}
+#endif
