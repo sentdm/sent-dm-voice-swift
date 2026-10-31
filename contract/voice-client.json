@@ -1,0 +1,167 @@
+{
+  "version": "1.0.0",
+  "errors": {
+    "categories": ["auth", "media", "signaling", "network", "validation", "capability"],
+    "codes": [
+      "TOKEN_EXPIRED",
+      "TOKEN_INVALID",
+      "NOT_REGISTERED",
+      "MEDIA_PERMISSION_DENIED",
+      "CALL_REJECTED",
+      "CALL_FAILED",
+      "NETWORK",
+      "CAPABILITY_UNSUPPORTED",
+      "INVALID_ADDRESS",
+      "CALL_IN_PROGRESS",
+      "UNKNOWN"
+    ],
+    "classes": [
+      {
+        "name": "TokenExpiredError",
+        "code": "TOKEN_EXPIRED",
+        "category": "auth",
+        "retriable": true
+      },
+      {
+        "name": "TokenInvalidError",
+        "code": "TOKEN_INVALID",
+        "category": "auth",
+        "retriable": false
+      },
+      {
+        "name": "NotRegisteredError",
+        "code": "NOT_REGISTERED",
+        "category": "validation",
+        "retriable": false
+      },
+      {
+        "name": "MediaPermissionError",
+        "code": "MEDIA_PERMISSION_DENIED",
+        "category": "media",
+        "retriable": false
+      },
+      {
+        "name": "CallRejectedError",
+        "code": "CALL_REJECTED",
+        "category": "signaling",
+        "retriable": false
+      },
+      {
+        "name": "CallFailedError",
+        "code": "CALL_FAILED",
+        "category": "signaling",
+        "retriable": false
+      },
+      {
+        "name": "NetworkError",
+        "code": "NETWORK",
+        "category": "network",
+        "retriable": true
+      },
+      {
+        "name": "CapabilityUnsupportedError",
+        "code": "CAPABILITY_UNSUPPORTED",
+        "category": "capability",
+        "retriable": false
+      }
+    ]
+  },
+  "client": {
+    "states": ["unregistered", "registering", "registered", "offline", "destroyed"],
+    "events": [
+      "registering",
+      "registered",
+      "unregistered",
+      "incomingCall",
+      "activeCallChanged",
+      "offline",
+      "tokenWillExpire",
+      "error"
+    ]
+  },
+  "call": {
+    "states": [
+      "initiated",
+      "ringing",
+      "answered",
+      "connected",
+      "reconnecting",
+      "completed",
+      "failed",
+      "busy",
+      "noAnswer"
+    ],
+    "initialState": {
+      "outbound": "initiated",
+      "inbound": "ringing"
+    },
+    "transitions": {
+      "initiated": ["ringing", "answered", "connected", "completed", "failed", "busy", "noAnswer"],
+      "ringing": ["answered", "connected", "completed", "failed", "busy", "noAnswer"],
+      "answered": ["connected", "completed", "failed", "busy", "noAnswer"],
+      "connected": ["reconnecting", "completed", "failed", "busy", "noAnswer"],
+      "reconnecting": ["connected", "completed", "failed", "busy", "noAnswer"],
+      "completed": [],
+      "failed": [],
+      "busy": [],
+      "noAnswer": []
+    },
+    "events": [
+      "ringing",
+      "answered",
+      "connected",
+      "reconnecting",
+      "reconnected",
+      "disconnected",
+      "muteChanged",
+      "qualityWarning",
+      "error"
+    ]
+  },
+  "invite": {
+    "events": ["accepted", "rejected", "cancelled"]
+  },
+  "audio": {
+    "events": ["deviceChanged"]
+  },
+  "token": {
+    "refreshShare": 0.8,
+    "refreshMarginMs": 30000,
+    "initialRetryDelayMs": 500,
+    "maxRetryDelayMs": 8000,
+    "offlineRetryIntervalMs": 30000
+  },
+  "telemetry": {
+    "events": [
+      "register.completed",
+      "register.failed",
+      "unregister.completed",
+      "client.info",
+      "client.error",
+      "call.started",
+      "call.connected",
+      "call.quality",
+      "call.ended"
+    ],
+    "payloadFields": [
+      "browser",
+      "browser_version",
+      "os",
+      "os_version",
+      "device_type",
+      "duration_ms",
+      "attempt",
+      "direction",
+      "outcome",
+      "rtt_ms",
+      "jitter_ms",
+      "packet_loss",
+      "samples",
+      "code",
+      "category",
+      "message",
+      "retriable",
+      "provider_error"
+    ]
+  }
+}
