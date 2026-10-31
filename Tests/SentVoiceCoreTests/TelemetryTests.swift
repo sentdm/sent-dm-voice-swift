@@ -3,14 +3,14 @@ import XCTest
 @testable import SentVoiceCore
 
 final class TelemetryTests: XCTestCase {
-    private let date = Date(timeIntervalSince1970: 1_793_440_800) // 2026-10-30T22:00:00Z
+    private let date = Date(timeIntervalSince1970: 1_793_397_600) // 2026-10-30T22:00:00Z
 
     func testFlushPostsABatchWithTheVoiceTokenAndTheSDKVersion() async throws {
         let http = FakeHTTP([FakeHTTP.ok("{}", status: 202)])
         let telemetry = Telemetry(baseURL: URL(string: "https://api.example.test")!, sdkVersion: "1.2.3", http: http)
+        telemetry.useToken("voice.token")
         telemetry.record(.registerCompleted, payload: ["attempt": .int(1)], at: date)
         telemetry.record(.callStarted, callId: "call_1", payload: ["direction": .string("outbound")], at: date)
-        telemetry.useToken("voice.token")
         await telemetry.flush()
 
         let request = try XCTUnwrap(http.requests.first)
@@ -28,13 +28,17 @@ final class TelemetryTests: XCTestCase {
         telemetry.destroy()
     }
 
-    func testNothingIsSentWithoutAToken() async {
+    func testEventsBeforeTheFirstTokenWaitForIt() async {
         let http = FakeHTTP([])
         let telemetry = Telemetry(http: http)
         telemetry.record(.clientInfo, at: date)
         await telemetry.flush()
         XCTAssertTrue(http.requests.isEmpty)
-        XCTAssertEqual(telemetry.pending.count, 1)
+        XCTAssertEqual(telemetry.pending.count, 1, "kept until a token arrives")
+        telemetry.useToken("t")
+        await telemetry.flush()
+        XCTAssertTrue(telemetry.pending.isEmpty)
+        XCTAssertEqual(http.requests.count, 1)
         telemetry.destroy()
     }
 

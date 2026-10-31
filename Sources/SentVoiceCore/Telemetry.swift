@@ -113,8 +113,8 @@ public final class Telemetry: @unchecked Sendable {
 
     /// Sends every queued event now. Returns once every batch has been answered or has failed.
     public func flush() async {
-        let (token, entries) = takeQueue()
-        guard let token, !entries.isEmpty else { return }
+        // Without a token the events stay queued: they are sent with the first token.
+        guard let (token, entries) = takeQueue(), !entries.isEmpty else { return }
         for batch in Telemetry.split(entries, sdkVersion: sdkVersion) {
             await send(token: token, batch: batch)
         }
@@ -146,8 +146,9 @@ public final class Telemetry: @unchecked Sendable {
         }
     }
 
-    private func takeQueue() -> (String?, [Entry]) {
+    private func takeQueue() -> (String, [Entry])? {
         locked {
+            guard let token else { return nil }
             let entries = queue
             queue = []
             return (token, entries)
