@@ -13,7 +13,17 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Check the generated contract
         run: scripts/check-contract
-      - name: Build
-        run: swift build
+      - name: Build the core
+        run: swift build --target SentVoiceCore
       - name: Test
         run: swift test
+
+  ios:
+    # The SentVoice target links the provider's binary, which exists for iOS only.
+    name: ios
+    timeout-minutes: 30
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Build for the simulator
+        run: xcodebuild build -scheme SentVoice -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -quiet

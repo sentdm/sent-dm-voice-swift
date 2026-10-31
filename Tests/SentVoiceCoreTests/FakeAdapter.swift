@@ -16,9 +16,11 @@ final class FakeAdapter: ProviderAdapter, @unchecked Sendable {
     private var handler: (@Sendable (String, AdapterCallEvent) -> Void)?
     private var nextCallNumber = 0
 
-    func register(credential: String) async throws {
+    private(set) var numbers: [String?] = []
+
+    func register(credential: String, number: String?) async throws {
         if let registerError { throw registerError }
-        lock.lock(); registered.append(credential); lock.unlock()
+        lock.lock(); registered.append(credential); numbers.append(number); lock.unlock()
     }
 
     func unregister() async throws {

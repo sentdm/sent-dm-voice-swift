@@ -57,8 +57,9 @@ public enum AdapterCallEvent: Sendable, Equatable {
 
 /// The provider's SDK behind the client. The core drives it and never sees the provider's types.
 public protocol ProviderAdapter: AnyObject, Sendable {
-    /// Registers with the credential Sent issued, or re-registers with a fresh one.
-    func register(credential: String) async throws
+    /// Registers with the credential Sent issued, or re-registers with a fresh one. `number` is the Sent
+    /// number the user is bound to, which the provider shows as the caller id on calls to phones.
+    func register(credential: String, number: String?) async throws
     func unregister() async throws
     /// Places a call and returns the provider's id for it.
     func call(_ target: CallTarget) async throws -> String
