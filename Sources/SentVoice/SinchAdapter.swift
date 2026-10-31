@@ -85,7 +85,7 @@ final class SinchAdapter: NSObject, ProviderAdapter, @unchecked Sendable {
 
     func sendDigits(callId: String, digits: String) throws {
         guard let call = lock.locked({ calls[callId] }) else { throw SentVoiceError(code: .callFailed, message: "The call is over.") }
-        call.sendDTMF(digits)
+        call.sendDTMF(key: digits)
     }
 
     func stats(callId: String) async throws -> CallStats {
