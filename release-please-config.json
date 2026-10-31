@@ -4,6 +4,7 @@
   "release-type": "simple",
   "package-name": "SentVoice",
   "include-v-in-tag": true,
+  "initial-version": "0.1.0",
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": false,
   "pull-request-header": "Automated Release PR",
