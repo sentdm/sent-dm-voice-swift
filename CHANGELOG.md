@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/sentdm/sent-dm-voice-swift/compare/v0.2.0...v0.2.1) (2026-10-31)
+
+
+### Documentation
+
+* this SDK places calls; receiving is the web client's ([f656ca1](https://github.com/sentdm/sent-dm-voice-swift/commit/f656ca12fc1777fffd1437fe2dfac2863e5a046b))
+
 ## [0.2.0](https://github.com/sentdm/sent-dm-voice-swift/compare/v0.1.1...v0.2.0) (2026-10-31)
 
 
