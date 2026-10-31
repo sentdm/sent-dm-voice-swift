@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Fails when Contract.swift is not what the pinned contract generates.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+python3 scripts/generate-contract.py >/dev/null
+if ! git diff --quiet -- Sources/SentVoiceCore/Contract.swift; then
+  echo "Contract.swift is out of date with contract/voice-client.json; run scripts/generate-contract.py and commit." >&2
+  git --no-pager diff -- Sources/SentVoiceCore/Contract.swift
+  exit 1
+fi
+echo "Contract.swift matches contract/voice-client.json $(python3 -c 'import json; print(json.load(open("contract/voice-client.json"))["version"])')"
